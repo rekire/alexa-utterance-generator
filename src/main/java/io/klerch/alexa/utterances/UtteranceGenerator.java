@@ -1,40 +1,50 @@
 package io.klerch.alexa.utterances;
 
-import io.klerch.alexa.utterances.format.*;
-import io.klerch.alexa.utterances.format.Formatter;
-import io.klerch.alexa.utterances.output.FileOutputWriter;
-import io.klerch.alexa.utterances.output.OutputWriter;
-import io.klerch.alexa.utterances.util.Resolver;
-import io.klerch.alexa.utterances.util.ResourceReader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import io.klerch.alexa.utterances.format.Formatter;
+import io.klerch.alexa.utterances.format.SMAPIFormatter;
+import io.klerch.alexa.utterances.format.SkillBuilderFormatter;
+import io.klerch.alexa.utterances.format.UtteranceListFormatter;
+import io.klerch.alexa.utterances.format.WeightedSegmentsFormatter;
+import io.klerch.alexa.utterances.output.ConsoleOutputWriter;
+import io.klerch.alexa.utterances.output.OutputWriter;
+import io.klerch.alexa.utterances.util.Resolver;
+import io.klerch.alexa.utterances.util.ResourceReader;
+
 public class UtteranceGenerator {
     // 1) Set the key of a file with utterances you created in the utterances-folder
-    private final static String utteranceFileKey = "booking"; // e.g. "booking" for using "/resources/output/utterances/booking.grammar"
+    //private final static String utteranceFileKey = "booking"; // e.g. "booking" for using "/resources/output/utterances/booking.grammar"
 
     // 2) choose one of  the output writers
-    private static final OutputWriter OUTPUT_WRITER = new FileOutputWriter(utteranceFileKey);
-    //private static final OutputWriter OUTPUT_WRITER = new ConsoleOutputWriter();
+    //private static final OutputWriter OUTPUT_WRITER = new FileOutputWriter(utteranceFileKey);
+    private static final OutputWriter OUTPUT_WRITER = new ConsoleOutputWriter();
 
     // 3) choose formatter
     //private static final Formatter FORMATTER = new SMAPIFormatter("booking order");
-    private static final Formatter FORMATTER = new SkillBuilderFormatter("booking order");
-    //private static final Formatter FORMATTER = new UtteranceListFormatter();
+    //private static final Formatter FORMATTER = new SkillBuilderFormatter("booking order");
+    private static final Formatter FORMATTER = new UtteranceListFormatter();
     //private static final Formatter FORMATTER = new WeightedSegmentsFormatter(1); // use booking2 as utteranceFileKey for an example
 
     // 4) run and done
-    public static void main(final String [] args) {
-        generateUtterances(getUtteranceFileKey(args).orElse(utteranceFileKey));
+    public static void main(final String [] args) throws Throwable {
+        generateUtterances(getUtteranceFileKey(args).orElseThrow(() -> new IllegalArgumentException("Expecting input file")));
         OUTPUT_WRITER.beforeWrite(getFormatter(args).orElse(FORMATTER));
         try {
             final List<String> utterances = new ArrayList<>();
