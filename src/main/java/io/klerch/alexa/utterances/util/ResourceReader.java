@@ -1,6 +1,5 @@
 package io.klerch.alexa.utterances.util;
 
-import io.klerch.alexa.utterances.UtteranceGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -17,15 +16,14 @@ public class ResourceReader {
     }
 
     public static List<String> getUtteranceList(final String utteranceResource) {
-        return getList(String.format("/utterances/%s.grammar", utteranceResource));
+        return getList(utteranceResource);//String.format("/utterances/%s.grammar", utteranceResource));
     }
 
     private static List<String> getList(final String fileName) {
         final List<String> lines = new ArrayList<>();
 
-        Optional.ofNullable(UtteranceGenerator.class.getResource(fileName)).ifPresent(url -> {
-            final File file = new File(url.getFile());
-
+        final File file = new File(fileName);
+        if(file.exists()) {
             try (final Scanner scanner = new Scanner(file)) {
                 while (scanner.hasNextLine()) {
                     lines.add(scanner.nextLine());
@@ -34,7 +32,7 @@ public class ResourceReader {
             } catch (final IOException e) {
                 e.printStackTrace();
             }
-        });
+        }
         // eliminate empty lines
         lines.removeIf(StringUtils::isBlank);
         // eliminate commentary
