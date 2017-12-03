@@ -23,3 +23,13 @@ src/main/resources/output/*
 .idea
 *.iml
 /src/test
+
+.DS_Store
+
+!.idea/inspectionProfiles/
+!.idea/codeStyleSettings.xml
+local.properties
+
+# Build related
+.gradle/
+build/

@@ -1,0 +1,25 @@
+apply plugin: 'application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.6'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.8.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.2'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'io.klerch.alexa.utterances.UtteranceGenerator'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+run.main = 'io.klerch.alexa.utterances.UtteranceGenerator'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
