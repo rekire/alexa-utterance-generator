@@ -1,12 +1,18 @@
 package io.klerch.alexa.utterances.output;
 
-import io.klerch.alexa.utterances.format.Formatter;
 import org.apache.commons.lang3.Validate;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Optional;
+
+import io.klerch.alexa.utterances.format.Formatter;
 
 public class FileOutputWriter extends AbstractOutputWriter {
     private final String fileName;

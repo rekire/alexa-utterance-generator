@@ -15,13 +15,24 @@ and avoids friction and false-positives in your Alexa skills.
 
 ## How to
 
+### Simplified usage of this fork
+
+Create a grammar file as in the original project (see the steps below). For my own usage I have a grammar file per
+supported language e.g. here `de.grammar` then I create the json file for the ask cli like this:
+
+    java -jar Alexa-Utterance-Generator.jar -f de.grammar smapi -in "my invocation name">de.json
+
+You can create the jar by running:
+
+    ./gradlew fatJar
+
 ### 1) Define your sample-utterance grammar file
 
 Create a new grammar-file in the _/src/main/resources/utterances_ folder with file-ending _*.grammar_ i.e. _booking.grammar_.
 Start writing down sample utterances all starting with the intent-name they should be linked to. The main difference from
 doing this in the developer console is that you make use of grammar-like syntax to provide more variety.
 
-```xml
+```
 BookingIntent: {|please} help me {get|book|order} a {taxi|room|table} for {1-12} people
 ```
 
@@ -38,14 +49,14 @@ This is optional, but super useful. If you don't want to have all your slot-valu
 create a new values-file in the _/src/main/resources/slots_ folder with file-ending _*.values_ i.e. _bookingType.values_.
 List the slot-values separates with a line-break.
 
-```xml
+```
 taxi
 room
 table
 ```
 and refer to it in your grammar with the file-key.
 
-```xml
+```
 BookingIntent: {|please} help me {get|book|order} a {bookingType} for {1-12} people
 ```
 
@@ -57,7 +68,7 @@ By now, we only used the slots in our grammar as a convenient option to reduce t
 to define at design-time. Of course, you'd like to keep some of the slots in the resulting set of utterances as you
 want to catch they values at runtime and process them in your skill-code. Escape from resoltuons with the following:
 
-```xml
+```
 BookingIntent: {|please} help me {get|book|order} a {{bookingType}} for {1-12} people
 ```
 
