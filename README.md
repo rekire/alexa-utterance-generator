@@ -25,6 +25,8 @@ supported language e.g. here `de.grammar` then I create the json file for the as
 You can create the jar by running:
 
     ./gradlew fatJar
+    
+Or by downloading it from [here](https://github.com/rekire/alexa-utterance-generator/releases/download/1.0/Alexa-Utterance-Generator.jar). 
 
 ### 1) Define your sample-utterance grammar file
 
